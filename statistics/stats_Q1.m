@@ -50,10 +50,41 @@ title('Action vs Semantic (fMRI Masks)')
 xlabel('Masks')
 ylabel('t-value')
 
-figure(3); 
-bar(standard_deviation);
-xlim=get(gca,'xlim');
-title('Action vs Semantic (fMRI Masks)')
-xlabel('Masks')
-ylabel('std')
+mean = load('mean_action_semantic.mat')
+mean = mean.mean;
+std = load('std_action_semantic.mat')
+std = std.std;
 
+mean_action = mean{:,2}
+mean_semantic = mean{:,3}
+std_action = std{:,2}
+std_semantic = std{:,3}
+
+
+means = cat(2,mean_action,mean_semantic);
+stds = cat(2,std_action,std_semantic);
+std_errors = stds/sqrt(4186)
+figure();
+b = bar(means, 'grouped')
+hold on
+% Calculate the number of groups and number of bars in each group
+[ngroups,nbars] = size(means);
+% Get the x coordinate of the bars
+x = nan(nbars, ngroups);
+for i = 1:nbars
+    x(i,:) = b(i).XEndPoints;
+end
+% Plot the errorbars
+errorbar(x',means,std_errors,'k','linestyle','none');
+ylim([0.01 0.0145])
+xlabel('Masks')
+ylabel('Mean')
+hold off
+
+
+% figure(3); 
+% bar(standard_deviation);
+% xlim=get(gca,'xlim');
+% title('Action vs Semantic (fMRI Masks)')
+% xlabel('Masks')
+% ylabel('std')
