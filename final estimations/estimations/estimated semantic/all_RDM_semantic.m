@@ -46,7 +46,7 @@ set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(1:46,
 set(gca, 'TickLength',[0 0]);
 axis equal; axis image; 
 title(['Semantic RDM: behaviour (animals)'],'fontsize',11);
-saveas(gcf,'behav_semantic_animals.png');
+saveas(gcf,'behav_RDM_semantic_animals.png');
 save('behav_RDM_semantic_animals','rdm_semantic_animals');
         
 figure('units','normalized','outerposition',[0 0 1 1]); image(rdm_semantic_tools,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
@@ -55,5 +55,5 @@ set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92
 set(gca, 'TickLength',[0 0]);
 axis equal; axis image; 
 title(['Semantic RDM: behaviour (tools)'],'fontsize',11);
-saveas(gcf,'behav_semantic_tools.png');
+saveas(gcf,'behav_RDM_semantic_tools.png');
 save('behav_RDM_semantic_tools','rdm_semantic_tools');
