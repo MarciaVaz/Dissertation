@@ -46,7 +46,7 @@ set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(1:46,
 set(gca, 'TickLength',[0 0]);
 axis equal; axis image; 
 title(['Action RDM: behaviour (animals)'],'fontsize',11);
-saveas(gcf,'behav_action_animals.png');
+saveas(gcf,'behav_RDM_action_animals.png');
 save('behav_RDM_action_animals','rdm_action_animals');
         
 figure('units','normalized','outerposition',[0 0 1 1]); image(rdm_action_tools,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
@@ -55,6 +55,6 @@ set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92
 set(gca, 'TickLength',[0 0]);
 axis equal; axis image; 
 title(['Action RDM: behaviour (tools)'],'fontsize',11);
-saveas(gcf,'behav_action_tools.png');
+saveas(gcf,'behav_RDM_action_tools.png');
 save('behav_RDM_action_tools','rdm_action_tools');
 
