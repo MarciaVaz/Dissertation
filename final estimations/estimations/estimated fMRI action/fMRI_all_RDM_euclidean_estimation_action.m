@@ -1,19 +1,22 @@
 clear all;close all;clc;
 
 path = dir(pwd);
-file_names=dir('*_Mask_estimate_RDM_A*');
-file_names.name
+file_names=dir('*_ROI_estimate_RDM_A*');
+file_names.name;
 
 RDMs_euclidean_estimation_action = NaN(15,4186);
 RDMs_euclidean_estimation_nonnan_action = NaN(15,4186);
 
- for each_mask=1:numel(file_names)
-    mask_name = file_names(each_mask).name
-    estimated_mask = load(file_names(each_mask).name)
-    comparisons = estimated_mask.estimate_RDM_A;
+load('name_ROI.mat')
+load('stimuli_names_92.mat');
+
+ for each_ROI=1:numel(file_names)
+    ROI_name = file_names(each_ROI).name;
+    estimated_ROI = load(file_names(each_ROI).name);
+    comparisons = estimated_ROI.estimate_RDM_A;
         
-    % each row is a mask and the columns are the rdm vector
-    if each_mask==1
+    % each row is a ROI and the columns are the rdm vector
+    if each_ROI==1
         RDMs_euclidean_estimation_action=comparisons;
     else
         RDMs_euclidean_estimation_action=cat(1,RDMs_euclidean_estimation_action,comparisons);
@@ -39,7 +42,7 @@ RDMs_euclidean_estimation_nonnan_action = NaN(15,4186);
     end
     
     % find where the nans are
-    [row column] = find(isnan(rdm)==1)
+    [row column] = find(isnan(rdm)==1);
     for m=1:length(row)
         % get the average across that row and column
         size_row = length(find(isnan(rdm(row(m),:))==0));
@@ -53,8 +56,10 @@ RDMs_euclidean_estimation_nonnan_action = NaN(15,4186);
         rdm_nonnan(row(idx),column(idx))=average_row_col(idx,1);
     end
     
+    save ([num2str(each_ROI) '_final_ROI_rdm_Action'], 'rdm_nonnan')
+
      % convert from matrix to vector
-    count=0
+    count=0;
     for r = 1:nStimuli-1
         for c = r+1:nStimuli
             count=count+1;
@@ -63,154 +68,28 @@ RDMs_euclidean_estimation_nonnan_action = NaN(15,4186);
     end
     
     % without nans -> estimated mean value instead
-    % each row is a mask and the columns are the rdm vector
-    if each_mask==1
+    % each row is a ROI and the columns are the rdm vector
+    if each_ROI==1
         RDMs_euclidean_estimation_nonnan_action = vector_nonnan;
     else
         RDMs_euclidean_estimation_nonnan_action=cat(1,RDMs_euclidean_estimation_nonnan_action,vector_nonnan);
     end
     
-    max_val=0.0227
-    
-    load('stimuli_names_92.mat');
-
-    if each_mask == 1
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left posterior occipital visual cortex'],'fontsize',11);
-        saveas(gcf,'01_Mask_action.png');
-        save('01_final_Mask_rdm_action','rdm_nonnan');
+    max_val=0.0227;
         
-    elseif each_mask == 2
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right lateral occipital cortex'],'fontsize',11);
-        saveas(gcf,'02_Mask_action.png')
-        save('02_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 3
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left lateral occipital cortex'],'fontsize',11);
-        saveas(gcf,'03_Mask_action.png')
-        save('03_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 4
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right fusiform gyrus'],'fontsize',11);
-        saveas(gcf,'04_Mask_action.png')
-        save('04_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 5
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left fusiform gyrus'],'fontsize',11);
-        saveas(gcf,'05_Mask_action.png')
-        save('05_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 6
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left anterior temporal lobe'],'fontsize',11);
-        saveas(gcf,'06_Mask_action.png')
-        save('06_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 7
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: frontal polar'],'fontsize',11);
-        saveas(gcf,'07_Mask_action.png')
-        save('07_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 8
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: posterior cirgulate gyrus'],'fontsize',11);
-        saveas(gcf,'08_Mask_action.png')
-        save('08_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 9
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right posterior insula'],'fontsize',11);
-        saveas(gcf,'09_Mask_action.png')
-        save('09_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 10
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right superior frontal'],'fontsize',11);
-        saveas(gcf,'10_Mask_action.png')
-        save('10_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 11
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left lateral occipital cortex '],'fontsize',11);
-        saveas(gcf,'11_Mask_action.png')
-        save('11_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 12
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left parietal'],'fontsize',11);
-        saveas(gcf,'12_Mask_action.png')
-        save('12_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 13
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right parietal'],'fontsize',11);
-        saveas(gcf,'13_Mask_action.png')
-        save('13_final_Mask_rdm_action','rdm_nonnan');
-    elseif each_mask == 14
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: left pre-motor cortex'],'fontsize',11);
-        saveas(gcf,'14_Mask_action.png')
-        save('14_final_Mask_rdm_action','rdm_nonnan');
-    else    
-        figure('units','normalized','WindowState','maximized');   image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-        set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
-        set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
-        set(gca, 'TickLength',[0 0]);
-        axis equal; axis image; 
-        title(['Action RDM: right cerebellum'],'fontsize',11);
-        saveas(gcf,'15_Mask_action.png')
-        save('15_final_Mask_rdm_action','rdm_nonnan');
-    end
+%     % get the the RDM for each ROI: action
+%     f=figure('units','normalized','WindowState','maximized');image(rdm_nonnan,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
+%     set(gca,'XTick',1:1:92); set(gca,'xticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);xtickangle(90);
+%     set(gca,'YTick',1:1:92); set(gca,'yticklabel',table2array(stimuli_names_92(:,1)),'fontsize', 6);ytickangle(0);
+%     set(gca, 'TickLength',[0 0]);
+%     axis equal; axis image; 
+%     title(['Action RDM: ' table2array(name_ROI(each_ROI,2))],'fontsize',11);
+%     if each_ROI<10
+%         saveas(gcf,[ num2str(0) num2str(each_ROI) '_final_ROI_action.png']);
+%     else
+%         saveas(gcf,[ num2str(each_ROI) '_final_ROI_action.png']);
+%     end 
+%     close(f)
 
 end
 
