@@ -6,7 +6,8 @@ To further understand how category knowledge is represented in the brain for dif
 
 ## Experiment 1: Behavioural experiment
 
-The multi-arrangement task was done using [Meadows website](https://meadows-research.com/). We recrited 45 participants and their similarity judgements according to action, semantic and visual task can be found [here](https://github.com/MarciaVaz/Dissertation/tree/main/02_behavioural%20experiment/individual%20RDMs)
+The multi-arrangement task was done using [Meadows website](https://meadows-research.com/). We recrited 45 participants and their similarity judgements according to action, semantic and visual task. The Meadows output for each participant and task can be found [here](https://github.com/MarciaVaz/Dissertation/tree/main/02_behavioural%20experiment/individual%20RDMs).
+
 
 
 
