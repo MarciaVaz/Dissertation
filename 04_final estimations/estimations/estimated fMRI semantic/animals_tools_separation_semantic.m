@@ -1,22 +1,22 @@
-%% Random image RDM selection
 clear all;close all;clc;
-rng(0);
 
 nStimuli = 46;
 
-path = dir(pwd);
+%% returns the final RDMs names in the current directory
 Files=dir('*_final_ROI_rdm_Semantic*');
 Files.name;
 
-RDMs_euclidean_vector_semantic_all = NaN(15,4186);
-RDMs_euclidean_vector_semantic_animals = NaN(15,1035);
-RDMs_euclidean_vector_semantic_tools = NaN(15,1035);
-RDMs_euclidean_vector_semantic_mix = NaN(15,1035);
+%% initialyse the vectors for part of the RDMs
+RDMs_euclidean_vector_semantic_all = NaN(15,4186); % all RDM
+RDMs_euclidean_vector_semantic_animals = NaN(15,1035); % RDM with only animals
+RDMs_euclidean_vector_semantic_tools = NaN(15,1035); % RDM with only tools
+RDMs_euclidean_vector_semantic_mix = NaN(15,1035); % RDM with comparisons across category
 
+%% Load stimuli names and ROI names
 load('stimuli_names_92.mat');
-    
 load('name_ROI.mat');
     
+%% create the RDMs matrices and vectors for part of the RDM
  for each_ROI=1:numel(Files)
     Files(each_ROI).name;
     estimated_ROI = load(Files(each_ROI).name);
@@ -45,12 +45,13 @@ load('name_ROI.mat');
     rdm_vector_animals_completed = reshape(rdm_semantic_animals',1,[]);
     rdm_vector_tools_completed = reshape(rdm_semantic_tools',1,[]);
     
+    
     %% convert the 2 rdms matrices into vectors
     count=0;
     for r = 1:nStimuli-1
         for c = r+1:nStimuli
             count=count+1;
-            rdm_vector_animals(1,count) = rdm_semantic_animals(r,c);,
+            rdm_vector_animals(1,count) = rdm_semantic_animals(r,c);
             rdm_vector_tools(1,count) = rdm_semantic_tools(r,c);
         end
     end
@@ -75,55 +76,62 @@ load('name_ROI.mat');
         RDMs_euclidean_vector_semantic_tools_completed=cat(1,RDMs_euclidean_vector_semantic_tools_completed,rdm_vector_tools_completed);
     end
     
-%     na = find(isnan(rdm_semantic_animals))
-%     vector_na = find(isnan(rdm_vector_animals))
-%     
-%     nt = find(isnan(rdm_semantic_tools))
-%     vector_nt = find(isnan(rdm_vector_tools))
-    
     max_val=0.0227;
     
-%     % get the RDMs for each ROI: ANIMALS
-%     g=figure('units','normalized','WindowState','maximized');image(rdm_semantic_animals,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-%     set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(1:46,1)),'fontsize', 6);xtickangle(90);
-%     set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(1:46,1)),'fontsize', 6);ytickangle(0);
-%     set(gca, 'TickLength',[0 0]);
-%     axis equal; axis image; 
-%     title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Animals)'],'fontsize',11);
-%     if each_ROI<10
+    % get the RDMs for each ROI: ANIMALS
+    g=figure('units','normalized','WindowState','maximized');image(rdm_semantic_animals,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
+    set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(1:46,1)),'fontsize', 6);xtickangle(90);
+    set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(1:46,1)),'fontsize', 6);ytickangle(0);
+    set(gca, 'TickLength',[0 0]);
+    axis equal; axis image; 
+    title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Animals)'],'fontsize',11);
+    if each_ROI<10
 %         saveas(gcf,[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_animals.png']);
-%     else
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_animals.png']] ;
+        saveas(gcf,imgName) ; 
+    else
 %         saveas(gcf,[ num2str(each_ROI) '_final_ROI_semantic_animals.png']);
-%     end 
-%     close(g)
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(each_ROI) '_final_ROI_semantic_animals.png']] ;
+        saveas(gcf,imgName) ; 
+    end 
+    close(g)
     
-%     % get the RDMs for each ROI: TOOLS
-%     f=figure('units','normalized','WindowState','maximized');image(rdm_semantic_tools,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-%     set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);xtickangle(90);
-%     set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);ytickangle(0);
-%     set(gca, 'TickLength',[0 0]);
-%     axis equal; axis image; 
-%     title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Tools)'],'fontsize',11);
-%     if each_ROI<10
+    % get the RDMs for each ROI: TOOLS
+    f=figure('units','normalized','WindowState','maximized');image(rdm_semantic_tools,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
+    set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);xtickangle(90);
+    set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);ytickangle(0);
+    set(gca, 'TickLength',[0 0]);
+    axis equal; axis image; 
+    title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Tools)'],'fontsize',11);
+    if each_ROI<10
 %         saveas(gcf,[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_tools.png']);
-%     else
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_tools.png']] ;
+        saveas(gcf,imgName) ; 
+    else
 %         saveas(gcf,[ num2str(each_ROI) '_final_ROI_semantic_tools.png']);
-%     end 
-%     close(f)
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(each_ROI) '_final_ROI_semantic_tools.png']] ;
+        saveas(gcf,imgName) ; 
+    end 
+    close(f)
 
-%     % get the RDMs for each ROI: MIX
-%     h=figure('units','normalized','WindowState','maximized');image(rdm_semantic_mix,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
-%     set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);xtickangle(90);
-%     set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);ytickangle(0);
-%     set(gca, 'TickLength',[0 0]);
-%     axis equal; axis image; 
-%     title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Mix)'],'fontsize',11);
-%     if each_ROI<10
+    % get the RDMs for each ROI: MIX
+    h=figure('units','normalized','WindowState','maximized');image(rdm_semantic_mix,'CDataMapping','scaled');C = colorbar;caxis([0 max_val]);       
+    set(gca,'XTick',1:1:46); set(gca,'xticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);xtickangle(90);
+    set(gca,'YTick',1:1:46); set(gca,'yticklabel',table2array(stimuli_names_92(47:92,1)),'fontsize', 6);ytickangle(0);
+    set(gca, 'TickLength',[0 0]);
+    axis equal; axis image; 
+    title(['semantic RDM: ' table2array(name_ROI(each_ROI,2)) ' (Stimuli: Mix)'],'fontsize',11);
+    if each_ROI<10
 %         saveas(gcf,[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_mix.png']);
-%     else
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(0) num2str(each_ROI) '_final_ROI_semantic_mix.png']] ;
+        saveas(gcf,imgName) ;
+    else
 %         saveas(gcf,[ num2str(each_ROI) '_final_ROI_semantic_mix.png']);
-%     end 
-%     close(h)
+        imgName = ['C:\Users\Márcia Vaz\Documents\GitHub\Dissertation\04_final estimations\final estimations (animals and tools separation)\',[ num2str(each_ROI) '_final_ROI_semantic_mix.png']] ;
+        saveas(gcf,imgName) ;
+    end 
+    close(h)
+
 end
 RDMs_euclidean_vector_semantic_all;
 RDMs_euclidean_vector_semantic_animals;
