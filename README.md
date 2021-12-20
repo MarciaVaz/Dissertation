@@ -22,7 +22,6 @@ I created a Python script to extract the ROIs from each beta image, using the cr
 
 We end up with the final 30 RDMs (15 ROIs for: action and semantic task).
 
-## Statistics
 
 
 
