@@ -8,13 +8,18 @@ To further understand how category knowledge is represented in the brain for dif
 
 The multi-arrangement task was done using [Meadows website](https://meadows-research.com/). We recrited 45 participants and we collected their similarity judgements according to action, semantic and visual task. The Meadows output for each participant and task can be found [here](https://github.com/MarciaVaz/Dissertation/tree/main/02_behavioural%20experiment/individual%20RDMs).
 
-Each participant only saw a few images out of 92, meaning that the output of one participant results in a partial RDM (not complete). In order to estimate a final RDM for action, semantic and visual task, we used the [iMDS_MATLAB toolbox](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB) that scales each participant to each other and normalises the data. I only modified and used ['estimate_from_partials_fMRI.m'](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB/estimate_from_partials_behav.m) script.
+Each participant only saw a few images out of 92, meaning that the output of one participant results in a partial RDM (not complete). In order to estimate a final RDM for action, semantic and visual task, we used the [iMDS_MATLAB toolbox](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB) that scales each participant to each other and normalises the data. I only modified and used ['estimate_from_partials_behav.m'](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB/estimate_from_partials_behav.m) script.
 
 We end up with the final 3 RDMs: action, semantic and action task.
 
 
 ## Experiment 2: fMRI experiment
 
+The fMRI data was analysed and pre-processed using Statistical Parametric Mapping (SPM12; Welcome Department of Imaging Neuroscience, University College London; www.fil.ion.ucl.ac.uk/~spm).
+
+MATLAB was used to extract the onset of each stimulus from the output CSV files of [PsychoPy](https://www.psychopy.org). An onset regressor was created for each stimulus, the regressors were ordered to match the order of the behavioural study. These scripts can be found on ['extract fMRI data (SPM)’](https://github.com/MarciaVaz/Dissertation/tree/main/03_fMRI%20experiment/01_extract%20fMRI%20data%20(SPM)). I posteriorly uploaded these scripts into SPM in order to create the [beta](https://github.com/MarciaVaz/Dissertation/tree/main/03_fMRI%20experiment/02_beta%20images) images for each stimulus for each participant. SPM was used to create the [masks](https://github.com/MarciaVaz/Dissertation/tree/main/03_fMRI%20experiment/04_Masks) and extract the 15 [Regions of Interest](https://github.com/MarciaVaz/Dissertation/tree/main/03_fMRI%20experiment/05_ROIs).
+
+Python toolbox named [rsatoolbox](https://github.com/MarciaVaz/Dissertation/tree/main/03_fMRI%20experiment/06_create%20RDMs/02_python%20(using%20rsatoolbox) was used to create partial RDMs with euclidean distances, for each ROI and each participant. The final 15 RDMs were estimated using the [iMDS_MATLAB toolbox](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB), specificly the ['estimate_from_partials_fMRI.m'](https://github.com/MarciaVaz/Dissertation/blob/main/03_fMRI%20experiment/06_create%20RDMs/iMDS_MATLAB/estimate_from_partials_fMRI.m) script.
 
 
 
