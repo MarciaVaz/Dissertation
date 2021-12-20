@@ -1,4 +1,4 @@
-# Dissertation Project
+# Dissertation Project by Marcia Vaz
 # Dissociating semantic and action processing for animals and tools categories: A representational similarity analysis of behaviour data and fMRI data
 
 
